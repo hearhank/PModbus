@@ -30,14 +30,14 @@ namespace PModbusTest
                     BandRate = 115200,
                     Timeout = 1000,
                 });
-                cc.AddToRead(new PModbusReadItem(0, 100, PModbusType.Input) { DelayCount=5 });
+                cc.AddToRead(new PModbusReadItem(0, 100, PModbusType.Input) { GroupID = 1, Enabled = false });
                 cc.AddToRead(new PModbusReadItem(0, 100, PModbusType.Hold));
 
                 client = new PModbusClient(cc, new PModbusStore(ref AppData.IDatas, ref AppData.ODatas));
                 client.Notify += Clienter_Notify;
                 client.Interval = 10;
                 client.Start();
-                
+
                 Debug.WriteLine(client.Connection.ToString());
             }
             buttonStart.Enabled = false;
@@ -68,13 +68,13 @@ namespace PModbusTest
                     IPAddr = "192.168.1.170",
                     Timeout = 1000,
                 });
-                cc.AddToRead(new PModbusReadItem(0, 100, PModbusType.Input));
+                cc.AddToRead(new PModbusReadItem(0, 100, PModbusType.Input) { GroupID = 1, Enabled = false });
                 cc.AddToRead(new PModbusReadItem(0, 100, PModbusType.Hold));
 
                 client = new PModbusClient(cc, new PModbusStore(ref AppData.IDatas, ref AppData.ODatas));
                 client.Notify += Clienter_Notify;
                 client.Start();
-                
+
                 Debug.WriteLine(client.Connection.ToString());
             }
 
@@ -100,6 +100,13 @@ namespace PModbusTest
         {
             if (client != null)
                 client.Stop();
+        }
+
+        bool isEnabled = true;
+        private void button1_Click(object sender, EventArgs e)
+        {
+            isEnabled = !isEnabled;
+            client.Connection.SetItem(1, isEnabled);
         }
     }
 

@@ -30,8 +30,8 @@ namespace PModbus
             {
                 throw new NotFiniteNumberException();
             }
-            //Debug.WriteLine(modbusData);
-            //Debug.WriteLine(string.Format("{0}~:{1} >>{2}...", startAddress, datas.Count(), string.Join(" ", datas.Take(3))));
+            Debug.WriteLine(modbusData);
+            Debug.WriteLine(string.Format("{0}~:{1} >>{2}...", startAddress, datas.Count(), string.Join(" ", datas.Take(3))));
         }
     }
 }

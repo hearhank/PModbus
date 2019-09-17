@@ -18,6 +18,7 @@ namespace PModbus
 
     public interface IPModbusReadItem : IPModbusItem
     {
+        event EventHandler EnabledChanged;
         int GroupID { get; set; }
         bool Enabled { get; set; }
         int DelayCount { get; set; }

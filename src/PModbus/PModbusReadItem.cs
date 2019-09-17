@@ -36,7 +36,18 @@ namespace PModbus
         public ModbusDataType ModbusDataType { get; private set; }
 
         public int GroupID { get => _groupID; set => _groupID = value; }
-        public bool Enabled { get => _enabled; set => _enabled = value; }
+        public bool Enabled
+        {
+            get => _enabled;
+            set
+            {
+                if (_enabled != value)
+                {
+                    _enabled = value;
+                    EnabledChanged?.Invoke(this, new EventArgs());
+                }
+            }
+        }
         public int DelayCount { get => _delayCount; set => _delayCount = value; }
 
         public Action<ushort[]> StoreAction { get => _storeAction; set => _storeAction = value; }
@@ -47,6 +58,8 @@ namespace PModbus
         private bool _enabled = true;
         private int _groupID = -1;
 
+        public event EventHandler EnabledChanged;
+
         public bool CountTo()
         {
             if (++_number > DelayCount)
@@ -55,6 +68,11 @@ namespace PModbus
                 return true;
             }
             return false;
+        }
+
+        public override string ToString()
+        {
+            return string.Join(AppNormalData.Split, new string[] { "Start Address=" + StartAddress, "Length=" + Length, "GroupID=" + GroupID, "Enabled=" + Enabled });
         }
     }
 }

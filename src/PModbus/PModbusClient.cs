@@ -135,7 +135,7 @@ namespace PModbus
                     master.WriteMultipleRegisters(slaveID, item.StartAddress, item.ToArray());
                     Thread.Sleep(interval);
                 }
-                var EnableList = Connection.ReadList.Where(x => x.Enabled);
+                var EnableList = Connection.ReadList.ToArray();
                 foreach (var item in EnableList)
                 {
                     if (source.IsCancellationRequested)
