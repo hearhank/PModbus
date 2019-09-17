@@ -27,8 +27,8 @@ private void ButtonStart_Click(object sender, EventArgs e)
              Timeout = 1000,
          });                               
          //添加需要读取的数据
-         cc.AddToRead(new PModbusItem(0, 100, PModbusType.Input));
-         cc.AddToRead(new PModbusItem(0, 100, PModbusType.Hold));
+     	cc.AddToRead(new PModbusReadItem(0, 100, PModbusType.Input) { GroupID = 1, Enabled = false });
+        cc.AddToRead(new PModbusReadItem(0, 100, PModbusType.Hold));
 
          //添加数据存储类，并实例化PModbusClient
          client = new PModbusClient(cc, new PModbusStore(ref AppData.IDatas, ref AppData.ODatas));
