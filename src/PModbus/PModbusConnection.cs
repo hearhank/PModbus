@@ -23,7 +23,6 @@ namespace PModbus
         private readonly ConcurrentQueue<IPModbusWriteItem> writesQueue = new ConcurrentQueue<IPModbusWriteItem>();
 
         private readonly List<IPModbusReadItem> enableItems = new List<IPModbusReadItem>();
-        private List<IPModbusReadItem> disabledItems = new List<IPModbusReadItem>();
 
         public int WriteCount => WritesQueue.Count;
 
@@ -32,43 +31,25 @@ namespace PModbus
 
         public void AddToRead(IPModbusReadItem item)
         {
-            item.EnabledChanged += Item_EnabledChanged;
-            if (item.Enabled)
-                enableItems.Add(item);
-            else
-                disabledItems.Add(item);
+            item.ReadCountChanged += Item_ReadCountChanged;
+            enableItems.Add(item);
         }
 
-        private void Item_EnabledChanged(object sender, EventArgs e)
+        private void Item_ReadCountChanged(object sender, ReadCountEventArgs e)
         {
-            if(sender is PModbusReadItem ritem)
+            if (sender is PModbusReadItem ritem)
             {
-                Debug.WriteLine(ritem);
+                Debug.WriteLine(ritem + ";Read Count=" + e.Value);
             }
         }
 
-        public void SetItem(int groupID, bool isEnabled, Action<ushort[]> storeAction = null)
+        public void SetItem(int groupID, int count, Action<ushort[]> storeAction = null)
         {
-            if (isEnabled)
+            var items = enableItems.Where(x => x.GroupID == groupID);
+            foreach (var item in items)
             {
-                var dItems = disabledItems.Where(x => x.GroupID == groupID);
-                foreach (var item in dItems)
-                {
-                    item.Enabled = true;
-                    item.StoreAction = storeAction;
-                }
-                enableItems.AddRange(dItems.ToArray());
-                disabledItems.RemoveAll(x => x.Enabled);
-            }
-            else
-            {
-                var eItems = enableItems.Where(x => x.GroupID == groupID);
-                foreach (var item in eItems)
-                {
-                    item.Enabled = false;
-                }
-                disabledItems.AddRange(eItems.ToArray());
-                enableItems.RemoveAll(x => !x.Enabled);
+                item.ReadCount = count;
+                item.StoreAction = storeAction;
             }
         }
         public void AddToWrite(IPModbusWriteItem item)

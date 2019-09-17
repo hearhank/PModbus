@@ -49,8 +49,8 @@
     <Compile Include="Interface\IConnectDevice.cs" />
     <Compile Include="Interface\IPModbusClient.cs" />
     <Compile Include="Interface\IPModbusConnection.cs" />
+    <Compile Include="Interface\IPModbusItem.cs" />
     <Compile Include="Interface\IPModbusStore.cs" />
-    <Compile Include="IPModbusItem.cs" />
     <Compile Include="PModbusClient.cs" />
     <Compile Include="PModbusConnection.cs" />
     <Compile Include="PModbusReadItem.cs" />

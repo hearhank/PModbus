@@ -3,7 +3,7 @@ using Modbus.Device;
 
 namespace PModbus
 {
-    public class SerialPortDevice : IConnectDevice
+    public sealed class SerialPortDevice : IConnectDevice
     {
         public string ComPort { get; set; }
         public int BandRate { get; set; }

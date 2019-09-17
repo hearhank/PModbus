@@ -135,7 +135,10 @@ namespace PModbus
                     master.WriteMultipleRegisters(slaveID, item.StartAddress, item.ToArray());
                     Thread.Sleep(interval);
                 }
-                var EnableList = Connection.ReadList.ToArray();
+                var EnableList = Connection.ReadList.Where(x => x.ReadCount != 0);
+                if (EnableList.Count() == 0)
+                    Thread.Sleep(100);
+
                 foreach (var item in EnableList)
                 {
                     if (source.IsCancellationRequested)
@@ -166,6 +169,8 @@ namespace PModbus
                         {
                             Store.Store(item.ModbusDataType, item.StartAddress, results);
                         }
+                        if (item.ReadCount > 0)
+                            item.ReadCount--;
                     }
                     Thread.Sleep(interval);
                 }

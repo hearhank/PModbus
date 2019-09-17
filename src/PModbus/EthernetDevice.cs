@@ -3,7 +3,7 @@ using Modbus.Device;
 
 namespace PModbus
 {
-    public class EthernetDevice : IConnectDevice
+    public sealed class EthernetDevice : IConnectDevice
     {
         public EthernetDevice()
         {

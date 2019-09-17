@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -36,15 +37,18 @@ namespace PModbus
         public ModbusDataType ModbusDataType { get; private set; }
 
         public int GroupID { get => _groupID; set => _groupID = value; }
-        public bool Enabled
+        public int ReadCount
         {
-            get => _enabled;
+            get => _readcount;
             set
             {
-                if (_enabled != value)
+                if (_readcount != value)
                 {
-                    _enabled = value;
-                    EnabledChanged?.Invoke(this, new EventArgs());
+                    if (_readcount == 0 || value == 0)
+                    {
+                        ReadCountChanged?.Invoke(this, new ReadCountEventArgs(value));
+                    }
+                    _readcount = value;
                 }
             }
         }
@@ -55,10 +59,10 @@ namespace PModbus
         private int _number = 0;
         private Action<ushort[]> _storeAction = null;
         private int _delayCount = 0;
-        private bool _enabled = true;
+        private int _readcount = -1;
         private int _groupID = -1;
 
-        public event EventHandler EnabledChanged;
+        public event EventHandler<ReadCountEventArgs> ReadCountChanged;
 
         public bool CountTo()
         {
@@ -72,7 +76,7 @@ namespace PModbus
 
         public override string ToString()
         {
-            return string.Join(AppNormalData.Split, new string[] { "Start Address=" + StartAddress, "Length=" + Length, "GroupID=" + GroupID, "Enabled=" + Enabled });
+            return string.Join(AppNormalData.Split, new string[] { "Start Address=" + StartAddress, "Length=" + Length, "GroupID=" + GroupID });
         }
     }
 }

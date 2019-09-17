@@ -18,7 +18,13 @@ namespace PModbus
 
         void AddToRead(IPModbusReadItem item);
         void AddToWrite(IPModbusWriteItem item);
-        void SetItem(int groupID, bool isEnabled, Action<ushort[]> storeAction = null);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="groupID"></param>
+        /// <param name="count">-1表示一直读，0表示停止读，</param>
+        /// <param name="storeAction"></param>
+        void SetItem(int groupID, int count, Action<ushort[]> storeAction = null);
         void Close();
 
         int WriteCount { get; }
