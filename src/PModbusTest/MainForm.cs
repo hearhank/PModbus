@@ -30,13 +30,14 @@ namespace PModbusTest
                     BandRate = 115200,
                     Timeout = 1000,
                 });
-                cc.AddToRead(new PModbusItem(0, 100, PModbusType.Input));
-                cc.AddToRead(new PModbusItem(0, 100, PModbusType.Hold));
+                cc.AddToRead(new PModbusReadItem(0, 100, PModbusType.Input) { DelayCount=5 });
+                cc.AddToRead(new PModbusReadItem(0, 100, PModbusType.Hold));
 
                 client = new PModbusClient(cc, new PModbusStore(ref AppData.IDatas, ref AppData.ODatas));
                 client.Notify += Clienter_Notify;
+                client.Interval = 10;
                 client.Start();
-
+                
                 Debug.WriteLine(client.Connection.ToString());
             }
             buttonStart.Enabled = false;
@@ -67,8 +68,8 @@ namespace PModbusTest
                     IPAddr = "192.168.1.170",
                     Timeout = 1000,
                 });
-                cc.AddToRead(new PModbusItem(0, 100, PModbusType.Input));
-                cc.AddToRead(new PModbusItem(0, 100, PModbusType.Hold));
+                cc.AddToRead(new PModbusReadItem(0, 100, PModbusType.Input));
+                cc.AddToRead(new PModbusReadItem(0, 100, PModbusType.Hold));
 
                 client = new PModbusClient(cc, new PModbusStore(ref AppData.IDatas, ref AppData.ODatas));
                 client.Notify += Clienter_Notify;

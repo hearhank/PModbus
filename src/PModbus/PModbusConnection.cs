@@ -19,21 +19,29 @@ namespace PModbus
         public string Name { get => Device?.Name; }
 
 
-        private readonly ConcurrentQueue<PModbusItem> writesQueue = new ConcurrentQueue<PModbusItem>();
+        private readonly ConcurrentQueue<IPModbusWriteItem> writesQueue = new ConcurrentQueue<IPModbusWriteItem>();
 
-        private readonly List<PModbusItem> readList = new List<PModbusItem>();
+        private readonly List<IPModbusReadItem> readList = new List<IPModbusReadItem>();
 
         public int WriteCount => WritesQueue.Count;
 
-        public ConcurrentQueue<PModbusItem> WritesQueue { get => writesQueue; }
-        public List<PModbusItem> ReadList { get => readList; }
+        public ConcurrentQueue<IPModbusWriteItem> WritesQueue { get => writesQueue; }
+        public List<IPModbusReadItem> ReadList { get => readList; }
 
-        public void AddToRead(PModbusItem item)
+        public void AddToRead(IPModbusReadItem item)
         {
             readList.Add(item);
         }
-
-        public void AddToWrite(PModbusItem item)
+        public void SetItem(int groupID, bool isEnabled, Action<ushort[]> storeAction = null)
+        {
+            var item = readList.FirstOrDefault(x => x.GroupID == groupID);
+            if (item != null)
+            {
+                item.Enabled = isEnabled;
+                item.StoreAction = storeAction;
+            }
+        }
+        public void AddToWrite(IPModbusWriteItem item)
         {
             WritesQueue.Enqueue(item);
         }

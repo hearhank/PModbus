@@ -13,11 +13,12 @@ namespace PModbus
         bool Connect(ref IModbusMaster master);
         string Name { get; }
 
-        ConcurrentQueue<PModbusItem> WritesQueue { get; }
-        List<PModbusItem> ReadList { get; }
+        ConcurrentQueue<IPModbusWriteItem> WritesQueue { get; }
+        List<IPModbusReadItem> ReadList { get; }
 
-        void AddToRead(PModbusItem item);
-        void AddToWrite(PModbusItem item);
+        void AddToRead(IPModbusReadItem item);
+        void AddToWrite(IPModbusWriteItem item);
+        void SetItem(int groupID, bool isEnabled, Action<ushort[]> storeAction = null);
         void Close();
 
         int WriteCount { get; }

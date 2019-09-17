@@ -128,35 +128,44 @@ namespace PModbus
                     return;
                 }
 
-                while (Connection.WritesQueue.TryDequeue(out PModbusItem item))
+                while (Connection.WritesQueue.TryDequeue(out IPModbusWriteItem item))
                 {
                     if (source.IsCancellationRequested)
                         break;
                     master.WriteMultipleRegisters(slaveID, item.StartAddress, item.ToArray());
                     Thread.Sleep(interval);
                 }
-
-                foreach (var read in Connection.ReadList)
+                var EnableList = Connection.ReadList.Where(x => x.Enabled);
+                foreach (var item in EnableList)
                 {
                     if (source.IsCancellationRequested)
                         break;
+                    if (!item.CountTo())
+                        continue;
 
                     ushort[] results = null;
-                    if (read.ModbusDataType == Modbus.Data.ModbusDataType.InputRegister)
+                    if (item.ModbusDataType == Modbus.Data.ModbusDataType.InputRegister)
                     {
-                        results = master.ReadInputRegisters(slaveID, read.StartAddress, read.Length);
+                        results = master.ReadInputRegisters(slaveID, item.StartAddress, item.Length);
                     }
-                    else if (read.ModbusDataType == Modbus.Data.ModbusDataType.HoldingRegister)
+                    else if (item.ModbusDataType == Modbus.Data.ModbusDataType.HoldingRegister)
                     {
-                        results = master.ReadHoldingRegisters(slaveID, read.StartAddress, read.Length);
+                        results = master.ReadHoldingRegisters(slaveID, item.StartAddress, item.Length);
                     }
                     else
                     {
-                        throw new NotSupportedException(read.ModbusDataType.ToString());
+                        throw new NotSupportedException(item.ModbusDataType.ToString());
                     }
                     if (results != null && results.Length > 0)
                     {
-                        Store.Store(read.ModbusDataType, read.StartAddress, results);
+                        if (item.StoreAction != null)
+                        {
+                            item.StoreAction(results);
+                        }
+                        else
+                        {
+                            Store.Store(item.ModbusDataType, item.StartAddress, results);
+                        }
                     }
                     Thread.Sleep(interval);
                 }
@@ -188,7 +197,7 @@ namespace PModbus
 
         public void Write(ushort offset, IEnumerable<ushort> datas)
         {
-            Connection?.AddToWrite(new PModbusItem(offset, datas));
+            Connection?.AddToWrite(new PModbusWriteItem(offset, datas));
         }
 
         public void ChangeDevice(IConnectDevice device)

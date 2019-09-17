@@ -1,29 +1,16 @@
-﻿using Modbus.Data;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using Modbus.Data;
 
 namespace PModbus
 {
-    public enum PModbusType
+    public class PModbusWriteItem : IPModbusWriteItem
     {
-        Input,
-        Hold
-    }
-    public class PModbusItem : IEnumerable<UInt16>
-    {
-        public PModbusItem(ushort index, ushort length, PModbusType modbusData = PModbusType.Input)
-        {
-            StartAddress = index;
-            Length = length;
-            if (modbusData == PModbusType.Input)
-                ModbusDataType = ModbusDataType.InputRegister;
-            else
-                ModbusDataType = ModbusDataType.HoldingRegister;
-        }
-        public PModbusItem(ushort index, IEnumerable<ushort> datas)
+        public PModbusWriteItem(ushort index, IEnumerable<ushort> datas)
         {
             StartAddress = index;
             m_datas.AddRange(datas);
@@ -43,6 +30,6 @@ namespace PModbus
 
         public ushort StartAddress { get; set; }
         public ushort Length { get; set; }
-        public ModbusDataType ModbusDataType { get; set; }
+        public ModbusDataType ModbusDataType { get; private set; }
     }
 }

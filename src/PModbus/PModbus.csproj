@@ -50,10 +50,12 @@
     <Compile Include="Interface\IPModbusClient.cs" />
     <Compile Include="Interface\IPModbusConnection.cs" />
     <Compile Include="Interface\IPModbusStore.cs" />
+    <Compile Include="IPModbusItem.cs" />
     <Compile Include="PModbusClient.cs" />
     <Compile Include="PModbusConnection.cs" />
-    <Compile Include="PModbusItem.cs" />
+    <Compile Include="PModbusReadItem.cs" />
     <Compile Include="PModbusStore.cs" />
+    <Compile Include="PModbusWriteItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialPortDevice.cs" />
   </ItemGroup>
