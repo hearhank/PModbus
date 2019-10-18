@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PModbus", "PModbus\PModbus.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PModbusTest", "PModbusTest\PModbusTest.csproj", "{92C01D38-ED60-467D-A31A-DCEAF4CE377A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PModbus.Datas", "PModbus.Datas\PModbus.Datas.csproj", "{F7E165C3-64E3-477A-83A0-0EA58872CB32}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{92C01D38-ED60-467D-A31A-DCEAF4CE377A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92C01D38-ED60-467D-A31A-DCEAF4CE377A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92C01D38-ED60-467D-A31A-DCEAF4CE377A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7E165C3-64E3-477A-83A0-0EA58872CB32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7E165C3-64E3-477A-83A0-0EA58872CB32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7E165C3-64E3-477A-83A0-0EA58872CB32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7E165C3-64E3-477A-83A0-0EA58872CB32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

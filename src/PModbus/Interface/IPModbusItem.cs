@@ -4,11 +4,6 @@ using System.Collections.Generic;
 
 namespace PModbus
 {
-    public enum PModbusType
-    {
-        Input,
-        Hold
-    }
     public interface IPModbusItem : IEnumerable<UInt16>
     {
         ushort Length { get; set; }
